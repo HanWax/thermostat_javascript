@@ -1,0 +1,81 @@
+<!doctype> 
+<html>
+	<head>
+		<title>Thermostat JS</title>
+		<meta charset='utf8'>
+		<style>
+			body {
+				font-size: 50px;
+				font-family: Helvetica;
+				background-image: url(background.png);
+				background-repeat: none;
+			}
+
+			.efficient {
+				color: green;
+			}
+
+			.average {
+				color: orange;
+			}
+
+			.inefficient {
+				color: red;
+			}
+
+			span {
+				vertical-align: center;
+				horizontal-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h2>
+			<span class='temperature'></span>°C
+		</h2>
+			<button class='increaseTemp'>▲</button>
+			<button class='decreaseTemp'>▼</button>
+			<button class='reset'>Reset</button>
+			<br>
+			<input type='checkbox' id='psm' checked>
+			<label for='psm'>Power Saving Mode</label>
+	<script src='src/Thermostat.js'></script>
+	<script src='http://code.jquery.com/jquery-2.1.1.min.js'></script>
+	<script>
+
+		function updateTemperature(thermostat) {
+			$('.temperature').text(thermostat.temperature);
+			$('h2').attr('class', '').addClass(thermostat.energyUsage());
+			$.post('localhost:4567/temperature_change', { newTemperature: :thermostat.temperature})
+		}
+
+			$(document).ready(function(){
+				var thermostat = new Thermostat();
+				updateTemperature(thermostat);
+
+				$('.increaseTemp').on('click', function(){
+					thermostat.increaseTemperature();
+					updateTemperature(thermostat);
+				})
+
+				$('.decreaseTemp').on('click', function(){
+					thermostat.decreaseTemperature();
+					updateTemperature(thermostat);
+				})
+
+				$('.reset').on('click', function(){
+					thermostat.reset();
+					updateTemperature(thermostat);
+				})
+
+				$('#psm').on('change', function(){
+					thermostat.powerSaveMode = $(this).prop('checked');
+					updateTemperature(thermostat);
+				})
+			})
+	</script>
+	</body>
+
+
+</html>
