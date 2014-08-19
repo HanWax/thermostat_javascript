@@ -13,6 +13,12 @@ describe("Thermostat", function() {
       it("should be in PSM as default", function(){
         expect(thermostat.powerSaveMode).toBe(true);
       })
+
+      it("should be able to reset the temperature to 20", function(){
+        thermostat.temperature = 30
+        thermostat.reset()
+        expect(thermostat.temperature).toEqual(20);
+      })
   });
 
   describe('maximum temperature', function() {
@@ -91,5 +97,24 @@ describe("with PSM off", function(){
       });
     })
   })
+
+describe("energy usage level", function() {
+    it("is efficient if temperature is less than 18", function(){
+      thermostat.temperature = 17
+      expect(thermostat.energyUsage()).toEqual('efficient');
+    })
+
+    it("is average if temperature is greater than 18 but less than 25", function(){
+      thermostat.temperature = 24
+      expect(thermostat.energyUsage()).toEqual('average');
+    })
+
+    it("is inefficient if temperature is greater than 25", function(){
+      thermostat.temperature = 26
+      expect(thermostat.energyUsage()).toEqual('inefficient');
+    })
+  });
+
+
 });
   

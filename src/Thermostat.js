@@ -16,3 +16,12 @@ Thermostat.prototype.maximumTemperature = function() {
 	return (this.powerSaveMode) ? 25 : 32;
 }
 
+Thermostat.prototype.reset = function() {
+	this.temperature = 20;
+};
+
+Thermostat.prototype.energyUsage = function() {
+	if(this.temperature < 18) return 'efficient';
+	if(this.temperature < 25) return 'average';
+	return 'inefficient'
+};
